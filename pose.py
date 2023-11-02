@@ -53,6 +53,7 @@ def main():
   picam2 = Picamera2()
   picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (640, 480)}))
   picam2.start()
+  out = cv2.VideoWriter('outpy.avi',-1, 20.0, (height, width))
 
   while True:
     # Grab frame from video stream
@@ -79,11 +80,14 @@ def main():
     # img.save(args.output)
     # print('Done. Results saved at', args.output)
     output_image = utils.draw_keypoints_from_keypoints(pose, frame_rgb)
+    output_image = cv2.flip(output_image, 1) 
+    out.write(output_image)
     cv2.imshow('Object detector', output_image)
         # Press 'q' to quit
     if cv2.waitKey(1) == ord('q'):
         break
   # Clean up
+  out.release()
   cv2.destroyAllWindows()
 
 if __name__ == '__main__':
