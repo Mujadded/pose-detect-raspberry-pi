@@ -1,31 +1,27 @@
 import cv2
 import matplotlib
-
-# pairs of edges for 17 of the keypoints detected ...
-# ... these show which points to be connected to which point ...
-# ... we can omit any of the connecting points if we want, basically ...
-# ... we can easily connect less than or equal to 17 pairs of points ...
-# ... for keypoint RCNN, not  mandatory to join all 17 keypoint pairs
-# edges = [
-#     (0, 1), (0, 2), (2, 4), (1, 3), (6, 8), (8, 10),
-#     (5, 7), (7, 9), (5, 11), (11, 13), (13, 15), (6, 12),
-#     (12, 14), (14, 16), (5, 6)
-# ]
+from picamera2 import Picamera2
 
 edges = [
     (0, 1), (0, 2), (1, 3), (2, 4), (0, 5), (0, 6), (5, 7), (6, 8),
     (7, 9), (8, 10), (5, 11), (6, 12), (11, 13), (12, 14), (13, 15), (14, 16)
 ]
 
-THERESHOLD=0.50
+def init_camera(height,width):
+  # Get PiCamera2 library
+  picam2 = Picamera2()
+  picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (height, width)}))
+  picam2.start()
 
-def draw_keypoints_from_keypoints(keypoints, image):
+  return picam2
+
+def draw_keypoints_from_keypoints(keypoints, image, threshold):
     # the `outputs` is list which in-turn contains the dictionaries
     height, width = image.shape[0], image.shape[1] 
     for edge in edges:
         # proceed to draw the lines if the confidence score is above 0.9
         # if outputs[0]['scores'][i] > 0.9:
-        if (keypoints[edge[0]][2] > THERESHOLD and keypoints[edge[1]][2] > THERESHOLD):
+        if (keypoints[edge[0]][2] > threshold and keypoints[edge[1]][2] > threshold):
             for p in range(keypoints.shape[0]):
                 # draw the keypoints
                 cv2.circle(image, (int(keypoints[p, 1]* width-2),int(keypoints[p, 0]* height-2)), 
