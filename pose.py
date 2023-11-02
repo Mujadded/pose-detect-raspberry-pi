@@ -12,7 +12,7 @@ _MODEL_PATH = "./model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite
 _FRAME_HEIGHT, _FRAME_WEIGHT = 640, 480
 
 # Threshold of the accuracy
-_THERESHOLD = 0.50
+_THERESHOLD = 0.40
 
 
 
@@ -34,13 +34,13 @@ def main():
     transformed_image = interpreter_utils.transform_image_for_interpreture(image, interpreter)
     
     # Getting Outputs
-    keypoints = interpreter_utils.get_interpreter_output(interpreter, transformed_image)
+    poses, (src_height, src_width) = interpreter_utils.get_interpreter_output(interpreter, transformed_image)
 
-    # Reshapping keypoints
-    keypoints = keypoints.reshape(_NUM_KEYPOINTS, 3)
+    # # Reshapping keypoints
+    # keypoints = keypoints.reshape(_NUM_KEYPOINTS, 3)
 
     # Draw the lines in the keypoints
-    output_image = utils.draw_keypoints_from_keypoints(keypoints, image, _THERESHOLD)
+    output_image = utils.draw_keypoints_from_keypoints(poses, image, _THERESHOLD, src_height,src_width)
     out.write(output_image)
 
     # flipping the image for display

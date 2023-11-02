@@ -31,28 +31,24 @@ def get_output_tensor(interpreter, idx):
 def parse_output(interpreter):
   """Parses interpreter output tensors and returns decoded poses."""
   keypoints = get_output_tensor(interpreter, 0)
-  # keypoint_scores = get_output_tensor(interpreter, 1)
   pose_scores = get_output_tensor(interpreter, 2)
   num_poses = get_output_tensor(interpreter, 3)
-  # poses = []
+  poses = []
   for i in range(int(num_poses)):
-      pose_score = pose_scores[i]
       pose_keypoints = []
+      pose_score = pose_scores[i]
       for j, point in enumerate(keypoints[i]):
           y, x = point
           pose_keypoints.append([x,y,pose_score])
-  return pose_keypoints
+      poses.append(pose_keypoints)
+  return np.array(poses)
 
 def get_interpreter_output(interpreter, input_image):
     # Setting up interpreter inputs
-    # common.set_input(interpreter, input_image)
-    # interpreter.invoke()
-
-    # #Getting output
-    # output = common.output_tensor(interpreter, 0)
     input_data = np.asarray(input_image)
     edgetpu.run_inference(interpreter, input_data.flatten())
-    return parse_output(interpreter)
+    output = parse_output(interpreter)
+    return output, common.input_size(interpreter)
 
 def transform_image_for_interpreture(image, interpreter):
     # getting required input size
