@@ -31,6 +31,7 @@ def get_output_tensor(interpreter, idx):
 def parse_output(interpreter):
   """Parses interpreter output tensors and returns decoded poses."""
   keypoints = get_output_tensor(interpreter, 0)
+  keypoint_scores = get_output_tensor(interpreter, 1)
   pose_scores = get_output_tensor(interpreter, 2)
   num_poses = get_output_tensor(interpreter, 3)
   poses = []
@@ -39,7 +40,7 @@ def parse_output(interpreter):
       pose_score = pose_scores[i]
       for j, point in enumerate(keypoints[i]):
           y, x = point
-          pose_keypoints.append([x,y,pose_score])
+          pose_keypoints.append([x,y,keypoint_scores[i,j]])
       poses.append(pose_keypoints)
   return np.array(poses)
 
