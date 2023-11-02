@@ -1,6 +1,7 @@
 from pycoral.adapters import common
 import cv2
 import helper.utils as utils
+import helper.interpreter as interpreter_utils
 
 # The keypoints of model
 _NUM_KEYPOINTS = 17
@@ -16,7 +17,7 @@ _THERESHOLD = 0.50
 
 def main():
   # Initating Interpreter
-  interpreter = interpreter.init_interpreter(_MODEL_PATH)
+  interpreter = interpreter_utils.init_interpreter(_MODEL_PATH)
 
   # Initiating camera instance
   camera = utils.init_camera(_FRAME_HEIGHT, _FRAME_WEIGHT)
@@ -29,10 +30,10 @@ def main():
     image = camera.capture_array()
 
     # Transformed Images according to needs
-    transformed_image = interpreter.transform_image_for_interpreture(image, interpreter)
+    transformed_image = interpreter_utils.transform_image_for_interpreture(image, interpreter)
     
     # Getting Outputs
-    keypoints = interpreter.get_interpreter_output(interpreter, transformed_image)
+    keypoints = interpreter_utils.get_interpreter_output(interpreter, transformed_image)
 
     # Reshapping keypoints
     keypoints = keypoints.reshape(_NUM_KEYPOINTS, 3)
