@@ -1,4 +1,3 @@
-from pycoral.adapters import common
 import cv2
 import helper.utils as utils
 import helper.interpreter as interpreter_utils
@@ -14,6 +13,8 @@ _FRAME_HEIGHT, _FRAME_WEIGHT = 640, 480
 
 # Threshold of the accuracy
 _THERESHOLD = 0.50
+
+
 
 def main():
   # Initating Interpreter

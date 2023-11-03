@@ -1,13 +1,23 @@
-from pycoral.utils.edgetpu import make_interpreter
+import tflite_runtime.interpreter as tflite
 from pycoral.adapters import common
 import cv2
 import numpy as np
+from tflite_runtime.interpreter import load_delegate
+
+# POSENET Things
+EDGETPU_SHARED_LIB = 'libedgetpu.so.1'
+POSENET_SHARED_LIB = 'model/posenet_decoder.so'
 
 def init_interpreter(path: str):
   # Initiating Interpreter 
   # https://coral.ai/docs/reference/py/pycoral.utils/#pycoral.utils.edgetpu.make_interpreter
   # https://coral.ai/docs/edgetpu/tflite-python/#inferencing-example
-  interpreter = make_interpreter(path)
+  edgetpu_delegate = load_delegate(EDGETPU_SHARED_LIB)
+  posenet_decoder_delegate = load_delegate(POSENET_SHARED_LIB)
+  interpreter = tflite.Interpreter(
+    path,
+    experimental_delegates=[edgetpu_delegate,posenet_decoder_delegate]
+  )
   interpreter.allocate_tensors()
 
   return interpreter
