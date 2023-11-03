@@ -1,10 +1,7 @@
 import cv2
-import helper.utils as utils
-import helper.interpreter as interpreter_utils
+import engine.utils as utils
 from datetime import datetime
-
-# The keypoints of model
-_NUM_KEYPOINTS = 17
+from engine.pose_engine import PoseEngine
 
 # Model Path
 _MODEL_PATH = "./model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite"
@@ -19,7 +16,7 @@ _THERESHOLD = 0.50
 
 def main():
   # Initating Interpreter
-  interpreter = interpreter_utils.init_interpreter(_MODEL_PATH)
+  engine = PoseEngine(_MODEL_PATH)
 
   # Initiating camera instance
   camera = utils.init_camera(_FRAME_WEIGHT, _FRAME_HEIGHT )
@@ -31,7 +28,7 @@ def main():
   # Define the codec and create VideoWriter object
   fourcc = cv2.VideoWriter_fourcc('F','M','P','4')
   video_name= f"./captured_video/{datetime.today().strftime('%Y%m%d%H%M%S')}.avi"
-  print(video_name)
+
   fps = 6.0
   # Video Recorder instance
   out = cv2.VideoWriter(video_name,fourcc, fps, (_FRAME_WEIGHT, _FRAME_HEIGHT))
@@ -43,11 +40,8 @@ def main():
     # Start timer (for calculating frame rate)
     t1 = cv2.getTickCount()
 
-    # Transformed Images according to needs
-    transformed_image = interpreter_utils.transform_image_for_interpreture(image, interpreter)
-    
-    # Getting Outputs
-    poses, (src_width, src_height) = interpreter_utils.get_interpreter_output(interpreter, transformed_image)
+    _, src_height, src_width, _ = engine.get_input_tensor_shape()
+    poses, _ = engine.DetectPosesInImage(image)
 
     # Draw the lines in the keypoints
     output_image = utils.draw_keypoints_from_keypoints(poses, image, _THERESHOLD, src_width, src_height)
@@ -66,6 +60,7 @@ def main():
     # Output show
     cv2.putText(output_image,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('Pose detector', output_image)
+    # cv2.imwrite('./buffer_image/test.jpg', output_image) 
 
     # Key to quite display
     if cv2.waitKey(1) == ord('q'):
