@@ -35,7 +35,8 @@ def get_interpreter_output(interpreter, input_image):
 
     # #Getting output
     # output = common.output_tensor(interpreter, 0)
-    edgetpu.run_inference(interpreter, input_image)
+    input_data = np.asarray(input_image)
+    edgetpu.run_inference(interpreter, input_data.flatten())
     return get_output_tensor(interpreter,0)
 
 def transform_image_for_interpreture(image, interpreter):
