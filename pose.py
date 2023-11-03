@@ -7,7 +7,7 @@ import helper.interpreter as interpreter_utils
 _NUM_KEYPOINTS = 17
 
 # Model Path
-_MODEL_PATH = "./model/movenet_single_pose_lightning_ptq_edgetpu.tflite"
+_MODEL_PATH = "./model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite"
 
 # Frame shape
 _FRAME_HEIGHT, _FRAME_WEIGHT = 640, 480
