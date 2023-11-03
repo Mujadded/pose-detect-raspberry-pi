@@ -6,13 +6,13 @@ import helper.interpreter as interpreter_utils
 _NUM_KEYPOINTS = 17
 
 # Model Path
-_MODEL_PATH = "./model/posenet_resnet_50_640_480_16_quant_edgetpu_decoder.tflite"
+_MODEL_PATH = "./model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite"
 
 # Frame shape
-_FRAME_HEIGHT, _FRAME_WEIGHT = 640, 480
+_FRAME_WEIGHT, _FRAME_HEIGHT = 1024, 768
 
 # Threshold of the accuracy
-_THERESHOLD = 0.40
+_THERESHOLD = 0.50
 
 
 
@@ -21,32 +21,45 @@ def main():
   interpreter = interpreter_utils.init_interpreter(_MODEL_PATH)
 
   # Initiating camera instance
-  camera = utils.init_camera(_FRAME_HEIGHT, _FRAME_WEIGHT)
+  camera = utils.init_camera(_FRAME_WEIGHT, _FRAME_HEIGHT )
 
+  # Initialize frame rate calculation
+  frame_rate_calc = 1
+  freq = cv2.getTickFrequency()
+  # Define the codec and create VideoWriter object
+  fourcc = cv2.VideoWriter_fourcc('F','M','P','4')
+  fps = 10.0
   # Video Recorder instance
-  out = cv2.VideoWriter('outpy.avi',-1, 20.0, (_FRAME_HEIGHT, _FRAME_WEIGHT))
-
+  out = cv2.VideoWriter('outpy.avi',fourcc, fps, (_FRAME_WEIGHT, _FRAME_HEIGHT))
   while True:
     # Grab frame from video stream
     image = camera.capture_array()
+
+    # Start timer (for calculating frame rate)
+    t1 = cv2.getTickCount()
 
     # Transformed Images according to needs
     transformed_image = interpreter_utils.transform_image_for_interpreture(image, interpreter)
     
     # Getting Outputs
-    poses, (src_height, src_width) = interpreter_utils.get_interpreter_output(interpreter, transformed_image)
-
-    # # Reshapping keypoints
-    # keypoints = keypoints.reshape(_NUM_KEYPOINTS, 3)
+    poses, (src_width, src_height) = interpreter_utils.get_interpreter_output(interpreter, transformed_image)
 
     # Draw the lines in the keypoints
-    output_image = utils.draw_keypoints_from_keypoints(poses, image, _THERESHOLD, src_height,src_width)
+    output_image = utils.draw_keypoints_from_keypoints(poses, image, _THERESHOLD, src_width, src_height)
+    output_image=cv2.cvtColor(output_image, cv2.COLOR_BGRA2BGR)
     out.write(output_image)
+
+    # Draw framerate in corner of frame
+    # Calculate framerate
+    t2 = cv2.getTickCount()
+    time1 = (t2-t1)/freq
+    frame_rate_calc= 1/time1
 
     # flipping the image for display
     output_image = cv2.flip(output_image, 1)
 
     # Output show
+    cv2.putText(output_image,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
     cv2.imshow('Pose detector', output_image)
 
     # Key to quite display
