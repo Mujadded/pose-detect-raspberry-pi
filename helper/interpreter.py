@@ -22,14 +22,19 @@ def init_interpreter(path: str):
 
   return interpreter
 
+def get_output_tensor(interpreter, idx):
+    """Returns output tensor view."""
+    return np.squeeze(interpreter.tensor(
+        interpreter.get_output_details()[idx]['index'])())
+
 def get_interpreter_output(interpreter, input_image):
     # Setting up interpreter inputs
-    common.set_input(interpreter, input_image)
-    interpreter.invoke()
+    # common.set_input(interpreter, input_image)
+    # interpreter.invoke()
 
-    #Getting output
-    output = common.output_tensor(interpreter, 0)
-    return output.copy()
+    # #Getting output
+    # output = common.output_tensor(interpreter, 0)
+    return get_output_tensor(0)
 
 def transform_image_for_interpreture(image, interpreter):
     # getting required input size
