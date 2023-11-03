@@ -1,6 +1,7 @@
 import cv2
 import helper.utils as utils
 import helper.interpreter as interpreter_utils
+from datetime import datetime
 
 # The keypoints of model
 _NUM_KEYPOINTS = 17
@@ -26,11 +27,15 @@ def main():
   # Initialize frame rate calculation
   frame_rate_calc = 1
   freq = cv2.getTickFrequency()
+
   # Define the codec and create VideoWriter object
   fourcc = cv2.VideoWriter_fourcc('F','M','P','4')
-  fps = 8.0
+  video_name= f"./captured_video/{datetime.today().strftime('%Y%m%d%H%M%S')}.avi"
+  print(video_name)
+  fps = 6.0
   # Video Recorder instance
-  out = cv2.VideoWriter('./capured_video/outpy.avi',fourcc, fps, (_FRAME_WEIGHT, _FRAME_HEIGHT))
+  out = cv2.VideoWriter(video_name,fourcc, fps, (_FRAME_WEIGHT, _FRAME_HEIGHT))
+  
   while True:
     # Grab frame from video stream
     image = camera.capture_array()
