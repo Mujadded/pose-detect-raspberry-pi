@@ -28,9 +28,9 @@ def main():
   freq = cv2.getTickFrequency()
   # Define the codec and create VideoWriter object
   fourcc = cv2.VideoWriter_fourcc('F','M','P','4')
-  fps = 10.0
+  fps = 8.0
   # Video Recorder instance
-  out = cv2.VideoWriter('outpy.avi',fourcc, fps, (_FRAME_WEIGHT, _FRAME_HEIGHT))
+  out = cv2.VideoWriter('./capured_video/outpy.avi',fourcc, fps, (_FRAME_WEIGHT, _FRAME_HEIGHT))
   while True:
     # Grab frame from video stream
     image = camera.capture_array()
