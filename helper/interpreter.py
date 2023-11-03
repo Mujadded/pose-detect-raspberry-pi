@@ -1,5 +1,6 @@
 import tflite_runtime.interpreter as tflite
 from pycoral.adapters import common
+from pycoral.utils import edgetpu
 import cv2
 import numpy as np
 from tflite_runtime.interpreter import load_delegate
@@ -34,7 +35,8 @@ def get_interpreter_output(interpreter, input_image):
 
     # #Getting output
     # output = common.output_tensor(interpreter, 0)
-    return get_output_tensor(0)
+    edgetpu.run_inference(interpreter, input_image)
+    return get_output_tensor(interpreter,0)
 
 def transform_image_for_interpreture(image, interpreter):
     # getting required input size
