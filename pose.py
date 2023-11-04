@@ -14,7 +14,7 @@ _THERESHOLD = 0.50
 
 
 
-def main():
+def detect_pose(callback_function, quit_on_key=True):
   # Initating Interpreter
   engine = PoseEngine(_MODEL_PATH)
 
@@ -59,16 +59,14 @@ def main():
 
     # Output show
     cv2.putText(output_image,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
-    cv2.imshow('Pose detector', output_image)
-    # cv2.imwrite('./buffer_image/test.jpg', output_image) 
+    # cv2.imshow('Pose detector', output_image)
+    # cv2.imwrite('./buffer_image/test.jpg', output_image)
+    callback_function(output_image)
 
     # Key to quite display
-    if cv2.waitKey(1) == ord('q'):
+    if cv2.waitKey(1) == ord('q') and quit_on_key:
         break
   
   # Clean up
   out.release()
   cv2.destroyAllWindows()
-
-if __name__ == '__main__':
-  main()
