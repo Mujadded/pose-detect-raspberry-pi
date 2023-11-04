@@ -56,8 +56,8 @@ def draw_keypoints_from_keypoints(poses, image, threshold, src_width,src_height)
     # the `outputs` is list which in-turn contains the dictionaries
     height, width = image.shape[0], image.shape[1] 
     scale_x, scale_y = width/src_width , height/ src_height
-    xys = {}
     for pose in poses:
+        xys = {}
         for label, keypoint in pose.keypoints.items():
             if keypoint.score < threshold: continue
             # Offset and scale to source coordinate space.
