@@ -1,9 +1,6 @@
 import cv2
 from flask import Flask, render_template, Response
-from engine.pose_engine import PoseEngine
-import engine.utils as utils
 import threading
-from datetime import datetime
 from pose import detect_pose
 
 
@@ -24,7 +21,7 @@ def render_image(image):
     with lock:
         outputFrame = image.copy()
 
-def detect_pose():
+def call():
     detect_pose(render_image, quit_on_key=False)
       
 
@@ -54,7 +51,7 @@ def video_feed():
 if __name__ == '__main__': 
     # start a thread that will perform motion detection
     t = threading.Thread(
-        target=detect_pose, 
+        target=call, 
     )
     t.daemon = True
     t.start()
