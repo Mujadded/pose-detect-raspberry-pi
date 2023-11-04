@@ -1,9 +1,7 @@
 import cv2
-import sys
 import engine.utils as utils
 from datetime import datetime
 from engine.pose_engine import PoseEngine
-from engine.buffer_writter import write_file
 
 # Model Path
 _MODEL_PATH = "./model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite"
@@ -61,16 +59,12 @@ def main():
 
     # Output show
     cv2.putText(output_image,'FPS: {0:.2f}'.format(frame_rate_calc),(30,50),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
-    # cv2.imshow('Pose detector', output_image)
+    cv2.imshow('Pose detector', output_image)
     # cv2.imwrite('./buffer_image/test.jpg', output_image) 
-    
 
     # Key to quite display
     if cv2.waitKey(1) == ord('q'):
-        write_file(sys.stdout.buffer, output_image, last_file=True)
         break
-    else:
-       write_file(sys.stdout.buffer, output_image, last_file=False)
   
   # Clean up
   out.release()
