@@ -3,6 +3,7 @@ import matplotlib
 from picamera2 import Picamera2
 from PoseNet.engine.pose_engine import KeypointType
 
+# Defining the edges we will draw line to
 EDGES = (
     (KeypointType.NOSE, KeypointType.LEFT_EYE),
     (KeypointType.NOSE, KeypointType.RIGHT_EYE),
@@ -53,16 +54,24 @@ def init_camera(height,width):
   return picam2
 
 def draw_keypoints_from_keypoints(poses, image, threshold, src_width,src_height):
-    # the `outputs` is list which in-turn contains the dictionaries
+    # Getting the height and width of the orginal image
     height, width = image.shape[0], image.shape[1] 
-    scale_x, scale_y = width/src_width , height/ src_height
+    
+    # Calculating the scale of which the points will be scaled to
+    scale_x, scale_y = width/src_width , height/src_height
+    
+    # Looping through the poses
     for pose in poses:
+        # Saving the point names with scores so that a one pose will not be
+        # Connected to the next
         xys = {}
         for label, keypoint in pose.keypoints.items():
+            # Checking threshold set
             if keypoint.score < threshold: continue
-            # Offset and scale to source coordinate space.
+
             kp_x = int((keypoint.point[0]) * scale_x)
             kp_y = int((keypoint.point[1]) * scale_y)
+
             cv2.circle(
                 image,
                 (kp_x,kp_y), 
@@ -75,12 +84,16 @@ def draw_keypoints_from_keypoints(poses, image, threshold, src_width,src_height)
             xys[label] = (kp_x, kp_y)
 
         for ie, (a, b) in enumerate(EDGES):
+            
+            # Random color generations for the lines
             rgb = matplotlib.colors.hsv_to_rgb([
                         ie/float(len(EDGES)), 1.0, 1.0
                     ])
             rgb = rgb*255
             
+            # so that we dont draw lines for open end (where the other dot is missing)
             if a not in xys or b not in xys: continue
+
             ax, ay = xys[a]
             bx, by = xys[b]
             cv2.line(

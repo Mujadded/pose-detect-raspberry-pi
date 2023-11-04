@@ -3,9 +3,9 @@ from flask import Flask, render_template, Response
 import threading
 from PoseNet.pose import detect_pose
 
-
 outputFrame = None
 lock = threading.Lock()
+
 # initialize a flask object
 app = Flask(__name__)
 
@@ -22,9 +22,8 @@ def render_image(image):
         outputFrame = image.copy()
 
 def call():
+    """The Thread Call"""
     detect_pose(render_image, quit_on_key=False)
-      
-
 
 def gen():
     global outputFrame, lock
@@ -55,4 +54,4 @@ if __name__ == '__main__':
     )
     t.daemon = True
     t.start()
-    app.run(host='0.0.0.0', port =5000, debug=True, threaded=True, use_reloader=False)
+    app.run(host='0.0.0.0', port =5000, debug=False, threaded=True, use_reloader=False)
