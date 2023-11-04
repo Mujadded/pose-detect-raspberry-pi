@@ -11,7 +11,7 @@ from tflite_runtime.interpreter import load_delegate
 from tflite_runtime.interpreter import Interpreter
 
 EDGETPU_SHARED_LIB = 'libedgetpu.so.1'
-POSENET_SHARED_LIB = 'model/posenet_decoder.so'
+POSENET_SHARED_LIB = 'engine/lib/posenet_decoder.so'
 
 class KeypointType(enum.IntEnum):
     """Pose kepoints."""
