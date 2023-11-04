@@ -1,7 +1,7 @@
 import cv2
 import matplotlib
 from picamera2 import Picamera2
-from engine.pose_engine import KeypointType
+from PoseNet.engine.pose_engine import KeypointType
 
 EDGES = (
     (KeypointType.NOSE, KeypointType.LEFT_EYE),

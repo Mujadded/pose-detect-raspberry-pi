@@ -1,6 +1,5 @@
 import cv2
-from pose import detect_pose
-
+from PoseNet.pose import detect_pose
 
 def main():
   detect_pose(display_in_cv_image, quit_on_key=True)

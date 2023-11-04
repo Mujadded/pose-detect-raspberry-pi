@@ -1,10 +1,10 @@
 import cv2
-import engine.utils as utils
+import PoseNet.engine.utils as utils
+from PoseNet.engine.pose_engine import PoseEngine
 from datetime import datetime
-from engine.pose_engine import PoseEngine
 
 # Model Path
-_MODEL_PATH = "./model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite"
+_MODEL_PATH = "PoseNet/model/posenet_resnet_50_416_288_16_quant_edgetpu_decoder.tflite"
 
 # Frame shape
 _FRAME_WEIGHT, _FRAME_HEIGHT = 1024, 768
