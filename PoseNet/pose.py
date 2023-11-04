@@ -27,7 +27,7 @@ def detect_pose(callback_function, quit_on_key=True):
 
   # Define the codec and create VideoWriter object
   fourcc = cv2.VideoWriter_fourcc('F','M','P','4')
-  video_name= f"./captured_video/{datetime.today().strftime('%Y%m%d%H%M%S')}.avi"
+  video_name= f"./PoseNet/captured_video/{datetime.today().strftime('%Y%m%d%H%M%S')}.avi"
 
   fps = 6.0
   # Video Recorder instance

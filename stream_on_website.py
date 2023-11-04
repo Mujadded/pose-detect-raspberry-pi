@@ -1,7 +1,7 @@
 import cv2
 from flask import Flask, render_template, Response
 import threading
-from pose import detect_pose
+from PoseNet.pose import detect_pose
 
 
 outputFrame = None
