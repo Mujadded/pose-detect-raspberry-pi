@@ -64,7 +64,7 @@ You can adjust various parameters like the frame size, accuracy threshold, and v
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for details.
 
 ## Acknowledgments
 
