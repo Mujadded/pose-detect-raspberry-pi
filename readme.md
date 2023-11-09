@@ -6,6 +6,26 @@ This repository contains code for a real-time pose detection system that uses Po
 
 2. **Local Pose Detection**: A command-line script that captures video from a camera and displays it using OpenCV. It also performs pose detection on the video feed, displaying the detected poses in a graphical window.
 
+## Hardware and Software Requirements
+
+To run this project, you will need the following hardware and software:
+
+**Hardware:**
+- Raspberry Pi 4 (2GB or higher recommended)
+- Coral USB Accelerator
+- A compatible USB-C power supply for the Raspberry Pi
+- microSD card (16GB or higher)
+- Raspberry Pi Camera Module v3
+
+**Software:**
+- Raspberry Pi OS (Raspbian version: 11 (bullseye) - 64)
+
+## Real-Time Pose Detection on Raspberry Pi 4
+
+This code is optimized for real-time execution on a Raspberry Pi 4. The Raspberry Pi 4, with its improved processing power and memory, is capable of running the pose detection model with acceptable frame rates for real-time applications.
+
+The use of the Coral USB Accelerator helps accelerate the pose detection process, making it suitable for real-time performance. The code has been fine-tuned to take advantage of the hardware capabilities of the Raspberry Pi 4 and the Coral USB Accelerator, ensuring smooth and efficient pose detection.
+
 ## Installation
 
 To run this code, you need to set up your Python environment and install the necessary dependencies. You can do this by creating a virtual environment and installing the required packages listed in the `requirements.txt` file.
@@ -54,4 +74,4 @@ The PoseNet model used in this project is based on Google's MediaPipe Pose model
 
 This project was created by [Your Name]. Feel free to reach out for questions or contributions.
 
-Enjoy exploring and using the real-time pose detection system!
+Enjoy exploring and using the real-time pose detection system on your Raspberry Pi 4!
