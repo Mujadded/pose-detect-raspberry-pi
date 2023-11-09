@@ -45,10 +45,10 @@ EDGES = (
 #     (KeypointType.RIGHT_KNEE, KeypointType.RIGHT_ANKLE),
 # )
 
-def init_camera(height,width):
+def init_camera(width, height):
   # Get PiCamera2 library
   picam2 = Picamera2()
-  picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (height, width)}))
+  picam2.configure(picam2.create_preview_configuration(main={"format": 'XRGB8888', "size": (width, height)}))
   picam2.start()
 
   return picam2
